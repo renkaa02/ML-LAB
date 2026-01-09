@@ -1,0 +1,49 @@
+#Loading data into pandas
+from google.colab import files
+uploaded = files.upload()
+
+import pandas as pd
+df = pd.read_csv('pokemon_data.csv')
+df
+
+#reading pandas
+print(df.columns)
+
+#print rows
+print(df.head(3))  #First three rows, by default it is first 5 rows
+
+df.describe()
+
+print(df.iloc[2,1])
+
+df.iloc[3] #to select rows by their integer poition
+df.iloc[3]
+
+df.sort_values("name", ascending = False)
+
+print(df.sort_values(["types", "stats"], ascending = False))
+
+print(df.sort_values(["types","stats"] , ascending = [1,0]))
+
+print(df['name'])
+
+print(df['name'][0:10])#first 10 names
+
+print(df[['name', 'types' , 'stats']])
+
+print(df.iloc[0:3])
+
+print(df.shape)
+
+print(df.info)
+
+print(df.describe)
+
+df.sort_values('name')
+
+df.sort_values('name', ascending = False)
+
+print(df.sort_values(['types' , 'stats'],ascending = False ))
+
+print(df.sort_values(['types' , 'stats'],ascending = [1, 0] )) #type 1 in ascending and stats in descending
+
