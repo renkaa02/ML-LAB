@@ -1,0 +1,27 @@
+import numpy as np
+from sklearn.decomposition import PCA
+import matplotlib.pyplot as plt
+
+# Generate some sample data (e.g., 100 samples, 10 features)
+X = np.random.rand(100, 10)
+
+# Initialize PCA with the desired number of components (e.g., 2 for visualization)
+n_components = 2
+pca = PCA(n_components=n_components)
+# or pca = PCA(n_components=2)
+
+# Fit PCA to the data and transform it
+X_pca = pca.fit_transform(X)
+
+print(X_pca)
+
+pca_one_component = PCA(n_components=1)
+X_pca_one = pca_one_component.fit_transform(X)
+
+print("\nTransformed data with 1 component:")
+print(X_pca_one)
+
+# Print the shape of the original and transformed data
+print("Original data shape:", X.shape)
+print("Transformed data shape:", X_pca.shape)
+
