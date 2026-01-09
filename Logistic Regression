@@ -1,0 +1,29 @@
+ import pandas as pd
+ import numpy as np
+
+ from google.colab import files
+ uploaded = files.upload()
+
+ df = pd.read_csv('Social_Network_Ads.csv')
+ df
+
+ df.head()
+
+ X = df[['Age','EstimatedSalary']]
+ y = df['Purchased']
+
+ from sklearn.model_selection import train_test_split
+ X_train,X_test,y_train,y_test = train_test_split(X,y,test_size = 0.30)
+
+X_train.shape
+
+X_train.isna().sum()
+
+from sklearn.impute import SimpleImputer
+
+ imputer = SimpleImputer(missing_values = np.nan, strategy = 'mean')
+
+imputer.fit(X_train[['Age','EstimatedSalary']])
+
+ X_train[['Age','EstimatedSalary']] = imputer.transform(X_train[['Age','EstimatedSalary']])
+
