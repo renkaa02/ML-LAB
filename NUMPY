@@ -1,0 +1,143 @@
+import numpy as np
+a=np.array([(1,2,3),(3,4,4)])
+print (a)
+print(type(a))
+
+b=np.array([1,2,3])
+print(b)
+
+print(b.dtype)#tell us the data type of element
+
+#dimention
+print(a.ndim)
+print(b.ndim)
+
+#shape (accurate num of rows and column)
+print(a.shape)
+print(b.shape)
+
+#if we do not specify the size of it, we can while declaring the array
+a=np.array([(1,2,3,),(3,4,4)], dtype='int16')
+print(a.dtype)
+
+#Get itemsize, in bytes
+print(a.itemsize)
+
+#If i increase the dtype size to int32, i will get itemsize as 4
+a=np.array([(1,2,3),(3,4,4)], dtype='int32')
+print(a.itemsize)
+print(a.size)
+
+#Get total size or number of bytes
+print(a.size *a.itemsize)
+print(a.nbytes)
+
+Changing specific elements, row, columns, etc
+import numpy as np
+a = np.array([[1,2,3,4,5,6,7],[8,9,10,11,12,13,14]])
+print (a)
+print(a.shape)
+
+
+#Accessing a specific element [r,c]
+print(a[1,4])
+a[0,-1] #through negative indexing
+
+#Accessing a complete row and column
+print(a[1, :])
+print(a[:,5])
+
+#Getting little more fancy through slicing [startindex, endindex,stepsize]
+print(a[0,1:6:2])
+
+#To change an element, its straightforward
+a[1,6] = 20
+print(a)
+a[:,2]=5
+print(a)
+
+#3D array
+q = np.array([[[1,2],[3,4]],[[5,6],[7,8]]])
+print(q)
+
+#Get a specific element
+print(q[0,1,1])
+print(q[:,1,:])
+
+#replace
+q[:,1,:] = [[9,9],[9,9]]
+q
+
+#All 0's matrix, specify shape
+a=np.zeros((2,2))
+print(a)
+print(np.zeros((2,2,3)))
+
+#All 1's matrix
+print(np.ones((4,2,2), dtype='int32'))
+
+#A matrix of your choice
+print(np.full((2,2),99, dtype='float32'))
+
+#Reusing previous matrix
+print(np.full_like(q,7))
+
+#Create random number
+print(np.random.rand(2,3))
+print(np.random.random_sample(q.shape))
+
+print(np.random.randint(7, size=(3,3)))
+print(np.random.randint(-6,6, size=(2,2)))
+print(np.random.randint(-6,6,2))
+
+#to create an identity matrix (It is always a square matrix)
+print(np.identity(7, dtype='int16'))
+
+#To create a repeated number
+arr=np.array([1,2,3])
+z=np.repeat(arr,3,axis=0)
+print(z)
+
+MATHRMATICS/BROADCASTING
+a=np.array([1,2,3,4])
+print(a)
+a+=2
+print(a)
+print(a+2)
+print(a*2)
+print(a/2)
+b=np.array([1,0,1,0])
+print(a+b)
+print(a**2)
+
+STATISTICS
+import numpy as np
+stats=np.array([[5,2,3],[4,5,6]])
+stats
+print(np.max(stats, axis=1))
+print(np.max(stats,axis=0))
+print(np.min(stats))
+print(np.sum(stats))
+sum(sum(stats))
+
+REORGANIZING ARRAY
+before=np.array([[1,2,3,4],[5,6,7,8]])
+print(before)
+print(before.shape)
+
+after=before.reshape((8,1)) #the num must be same
+print(after)
+
+#Vertically Stacking vectors
+v1=np.array([1,2,3,4])  #creating indivicual array verically(array)
+v2=np.array([5,6,7,8])
+np.vstack([v1,v2,v2])
+
+#Horizontal Stacking
+h1=np.ones((1,2))            #matrices se matrices bana rhe h
+print(h1)
+h2=np.zeros((1,2))
+print(h2)
+h= np.hstack((h1,h2))
+print(h)
+
