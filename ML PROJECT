@@ -1,0 +1,254 @@
+ import pandas as pd
+ import numpy as np
+ import seaborn as sns
+ import matplotlib.pyplot as plt
+ from sklearn.model_selection import train_test_split
+ from sklearn.preprocessing import MinMaxScaler
+ from sklearn.impute import SimpleImputer
+
+ from google.colab import files
+ uploaded = files.upload()
+
+ df = pd.read_csv('diabetes.csv')  # Upload the Pima Indians Diabetes dataset
+ df.head()
+
+ df.shape
+
+df.info()
+
+df.describe()
+
+df.isnull().sum()
+
+cols_with_zero = ['Glucose', 'BloodPressure', 'SkinThickness', 'Insulin', 'BMI']
+df[cols_with_zero] = df[cols_with_zero].replace(0, np.nan)
+
+# Check again
+df.isnull().sum()
+
+ imputer = SimpleImputer(missing_values=np.nan, strategy='median')
+ df[cols_with_zero] = imputer.fit_transform(df[cols_with_zero])
+
+ # Verify again
+ df.isnull().sum()
+
+ plt.figure(figsize=(10,6))
+ sns.boxplot(data=df)
+ plt.title("Boxplot for Outlier Detection in Dataset")
+ plt.show()
+
+scaler = MinMaxScaler()
+scaled_features = scaler.fit_transform(df.drop('Outcome', axis=1))
+
+df_scaled = pd.DataFrame(scaled_features, columns=df.columns[:-1])
+df_scaled['Outcome'] = df['Outcome']
+
+ plt.figure(figsize=(8,6))
+ sns.heatmap(df_scaled.corr(), annot=True, cmap='coolwarm')
+ plt.title("Correlation Heatmap")
+ plt.show()
+
+ X = df_scaled.drop('Outcome', axis=1)
+ y = df_scaled['Outcome']
+
+print("Training shape:", X_train.shape)
+print("Testing shape:", X_test.shape)
+
+ from sklearn.linear_model import LogisticRegression
+ from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+
+log_reg = LogisticRegression()
+log_reg.fit(X_train, y_train)
+
+ y_pred_lr = log_reg.predict(X_test)
+
+ print("Accuracy:", accuracy_score(y_test, y_pred_lr))
+
+ print("Confusion Matrix:\n", confusion_matrix(y_test, y_pred_lr))
+
+ print("Classification Report:\n", classification_report(y_test, y_pred_lr))
+
+ from sklearn.tree import DecisionTreeClassifier, plot_tree
+
+ dt = DecisionTreeClassifier(random_state=42, criterion='entropy', max_depth=4)
+ dt.fit(X_train, y_train)
+
+ y_pred_dt = dt.predict(X_test)
+
+ print("Accuracy:", accuracy_score(y_test, y_pred_dt))
+
+print("Confusion Matrix:\n", confusion_matrix(y_test, y_pred_dt))
+
+print("Classification Report:\n", classification_report(y_test, y_pred_dt))
+
+ cols_with_zero = ['Glucose', 'BloodPressure', 'SkinThickness', 'Insulin', 'BMI']
+ df[cols_with_zero] = df[cols_with_zero].replace(0, np.nan)
+
+imputer = SimpleImputer(missing_values=np.nan, strategy='median')
+df[cols_with_zero] = imputer.fit_transform(df[cols_with_zero])
+
+ cols_with_zero = ['Glucose', 'BloodPressure', 'SkinThickness', 'Insulin', 'BMI']
+ df[cols_with_zero] = df[cols_with_zero].replace(0, np.nan)
+
+ imputer = SimpleImputer(missing_values=np.nan, strategy='median')
+ df[cols_with_zero] = imputer.fit_transform(df[cols_with_zero])
+
+ scaler = MinMaxScaler()
+ scaled_features = scaler.fit_transform(df.drop('Outcome', axis=1))
+
+df_scaled = pd.DataFrame(scaled_features, columns=df.columns[:-1])
+df_scaled['Outcome'] = df['Outcome']
+
+ X = df_scaled.drop('Outcome', axis=1)
+ y = df_scaled['Outcome']
+
+from sklearn.ensemble import RandomForestClassifier
+rf = RandomForestClassifier(n_estimators=100, random_state=42)
+
+rf.fit(X_train, y_train)
+
+ y_pred_rf = rf.predict(X_test)
+
+ print("Accuracy:", accuracy_score(y_test, y_pred_rf))
+
+ print("\nConfusion Matrix:\n", confusion_matrix(y_test, y_pred_rf))
+
+print("\nClassification Report:\n", classification_report(y_test, y_pred_rf))
+
+importances = rf.feature_importances_
+features = X.columns
+
+ plt.figure(figsize=(8,6))
+ sns.barplot(x=importances, y=features)
+ plt.title("Feature Importance in Random Forest")
+ plt.show()
+
+ from sklearn.svm import SVC
+ svm = SVC(kernel='rbf', probability=True, random_state=42)
+ svm.fit(X_train, y_train)
+
+y_pred_svm = svm.predict(X_test)
+
+ print("Accuracy:", accuracy_score(y_test, y_pred_svm))
+
+print("\nConfusion Matrix:\n", confusion_matrix(y_test, y_pred_svm))
+
+ print("\nClassification Report:\n", classification_report(y_test, y_pred_svm))
+
+ from sklearn.metrics import roc_curve, auc
+ y_prob_rf = rf.predict_proba(X_test)[:, 1]
+ y_prob_svm = svm.predict_proba(X_test)[:, 1]
+
+ fpr_rf, tpr_rf, _ = roc_curve(y_test, y_prob_rf)
+ fpr_svm, tpr_svm, _ = roc_curve(y_test, y_prob_svm)
+ auc_rf = auc(fpr_rf, tpr_rf)
+ auc_svm = auc(fpr_svm, tpr_svm)
+ plt.figure(figsize=(8,6))
+ plt.plot(fpr_rf, tpr_rf, label=f"Random Forest (AUC = {auc_rf:.2f})")
+ plt.plot(fpr_svm, tpr_svm, label=f"SVM (AUC = {auc_svm:.2f})")
+ plt.plot([0,1], [0,1], 'k--')
+ plt.title("ROC Curve Comparison - Random Forest vs SVM")
+ plt.xlabel("False Positive Rate")
+ plt.ylabel("True Positive Rate")
+ plt.legend()
+ plt.grid(True)
+ plt.show()
+
+ from sklearn.model_selection import train_test_split
+ from sklearn.preprocessing import MinMaxScaler
+ from sklearn.impute import SimpleImputer
+ from sklearn.metrics import accuracy_score, confusion_matrix, classification_report, roc_curve, auc
+
+scaler = MinMaxScaler()
+scaled_features = scaler.fit_transform(df.drop('Outcome', axis=1))
+
+ df_scaled = pd.DataFrame(scaled_features, columns=df.columns[:-1])
+ df_scaled['Outcome'] = df['Outcome']
+
+ X = df_scaled.drop('Outcome', axis=1)
+ y = df_scaled['Outcome']
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+ from sklearn.neighbors import KNeighborsClassifier
+
+knn = KNeighborsClassifier(n_neighbors=5)
+
+knn.fit(X_train, y_train)
+
+y_pred_knn = knn.predict(X_test)
+
+ print("Accuracy of KNN model:", accuracy_score(y_test, y_pred_knn))
+
+ print("Confusion Matrix of KNN :\n", confusion_matrix(y_test, y_pred_knn))
+
+print("Classification Report of KNN:\n", classification_report(y_test, y_pred_knn))
+
+from sklearn.naive_bayes import GaussianNB
+
+ nb = GaussianNB()
+ nb.fit(X_train, y_train)
+
+ y_pred_nb = nb.predict(X_test)
+
+print("Accuracy :", accuracy_score(y_test, y_pred_nb))
+
+print("\nConfusion Matrix:\n", confusion_matrix(y_test, y_pred_nb))
+
+ print("\nClassification Report:\n", classification_report(y_test, y_pred_nb))
+
+ y_prob_knn = knn.predict_proba(X_test)[:, 1]
+ y_prob_nb = nb.predict_proba(X_test)[:, 1]
+
+ f_knn, t_knn, _ = roc_curve(y_test, y_prob_knn)
+ fr_nb, tr_nb, _ = roc_curve(y_test, y_prob_nb)
+
+auc_knn = auc(f_knn, t_knn)
+auc_nb = auc(fr_nb, tr_nb)
+
+ plt.figure(figsize=(8,6))
+ plt.plot(f_knn, t_knn, label=f"KNN (AUC = {auc_knn:.2f})")
+ plt.plot(fr_nb, tr_nb, label=f"Naive Bayes (AUC = {auc_nb:.2f})")
+ plt.plot([0,1], [0,1], 'k--')
+ plt.title("ROC Curve Comparison - KNN vs Naive Bayes")
+ plt.xlabel("False Positive Rate")
+ plt.ylabel("True Positive Rate")
+ plt.legend()
+ plt.grid(True)
+ plt.show()
+
+ from sklearn.linear_model import LogisticRegression
+ from sklearn.tree import DecisionTreeClassifier
+ from sklearn.ensemble import RandomForestClassifier
+ from sklearn.svm import SVC
+
+ # Initialize all models again for comparison
+ models = {
+ 'Logistic Regression': LogisticRegression(),
+ 'Decision Tree': DecisionTreeClassifier(random_state=42),
+ 'Random Forest': RandomForestClassifier(random_state=42),
+ 'SVM': SVC(probability=True, random_state=42),
+ 'KNN': KNeighborsClassifier(),
+ 'Naive Bayes': GaussianNB()
+ }
+
+ accuracy_scores = {}
+
+ for name, model in models.items():
+   model.fit(X_train, y_train)
+   preds = model.predict(X_test)
+   accuracy_scores[name] = accuracy_score(y_test, preds)
+
+# Convert to DataFrame for display
+acc_df = pd.DataFrame(list(accuracy_scores.items()), columns=['Model', 'Accuracy'])
+acc_df = acc_df.sort_values(by='Accuracy', ascending=False)
+print("Overall Model Accuracy Comparison:\n")
+print(acc_df)
+
+ plt.figure(figsize=(8,5))
+ sns.barplot(x='Accuracy', y='Model', data=acc_df, hue='Model', palette='viridis', dodge=False, legend=False)
+ plt.title("Comparison of Model Accuracies\n")
+ plt.xlabel("Accuracy Score")
+ plt.ylabel("Model")
+ plt.show()
+
