@@ -1,0 +1,61 @@
+#import necessary library
+import numpy as np
+import pandas as pd
+from sklearn import datasets
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+#load the dataset
+iris = datasets.load_iris()
+X = iris.data
+y = iris.target
+
+#split dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=42, stratify=y)
+
+#feature scaling
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+#create naive bayes model
+model = GaussianNB()
+model.fit(X_train_scaled, y_train)
+
+#make predictions
+y_pred = model.predict(X_test_scaled)
+
+#modl performance
+accuracy = accuracy_score(y_test, y_pred)
+print(f"\n✅ Model Accuracy: {accuracy*100:.2f}%")
+
+#confusion matrix
+cm = confusion_matrix(y_test, y_pred)
+print("\nConfusion Matrix:\n", cm)
+
+#classification
+print("\nClassification Report:\n", classification_report(y_test, y_pred, target_names=iris.target_names))
+
+#confusion matrix using seaborn
+plt.figure(figsize=(6,4))
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
+            xticklabels=iris.target_names,
+            yticklabels=iris.target_names)
+plt.xlabel("Predicted Label")
+plt.ylabel("True Label")
+plt.title("Naive Bayes Confusion Matrix")
+plt.show()
+
+#analyse predictions
+comparison = pd.DataFrame({
+    "Actual": [iris.target_names[i] for i in y_test],
+    "Predicted": [iris.target_names[i] for i in y_pred]
+})
+print("\nSample comparison of actual vs predicted labels:")
+print(comparison.head(10))
+
