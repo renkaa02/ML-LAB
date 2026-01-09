@@ -1,0 +1,59 @@
+from google.colab import drive
+drive.mount('/content/drive')
+
+file_path = '/content/drive/My Drive/MLLAB/datasets_11657_16098_train.csv'
+
+import seaborn as sns
+import pandas as pd
+
+df = sns.load_dataset('tips')
+
+titanic = pd.read_csv(file_path)
+
+df.head()
+
+sns.scatterplot(x = 'total_bill' , y = 'tip' , data = df)
+
+sns.scatterplot(x = 'total_bill' , y = 'tip' , hue = df['sex'] , data = df) #hue is keyword is use give different color other variables does not work, sex has female and male thats why
+
+sns.scatterplot(x = 'total_bill' , y = 'tip' , hue = df['sex'] , style = df['smoker'] , data = df) #style is use to plot graph in different bullent points eg:- 'cross'
+
+sns.scatterplot(x = 'total_bill' , y = 'tip' , hue = df['sex'] , style = df['smoker'] ,size = df['size'], data = df)
+
+sns.barplot(y = 'Age', x = 'Pclass', data = titanic)
+
+sns.barplot(y = 'Age', x = 'Pclass', hue = 'Sex', data = titanic)
+
+sns.displot(titanic['Age'])
+
+sns.displot(titanic[titanic['Survived']==0]['Age'])
+sns.displot(titanic[titanic['Survived']==1]['Age'])
+
+(titanic.groupby('Pclass')['Survived'].mean())*100
+
+pd.crosstab(titanic['SibSp'],titanic['Survived']) #submission way of two small attribute
+
+sns.clustermap(pd.crosstab(titanic['SibSp'],titanic['Survived'])) #use to relate two classes
+
+df1 = sns.load_dataset('iris')
+
+df1.head()
+
+df1.info()
+
+df1.shape
+
+sns.pairplot(df1, hue='species')
+
+df2 = sns.load_dataset('flights')
+
+df2.head()
+
+df2.info()
+
+df2.shape
+
+df2.groupby('year')['passengers'].sum()
+
+sns.lineplot(x='year', y='passengers', data=df2)
+
